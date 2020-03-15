@@ -56,11 +56,14 @@ export default class App extends React.Component {
   onChangeTag = e => {
     const tag = e.target.value
     this.setState({ tag })
-    console.log(tag)
   }
 
   onImageClick = tag => {
     this.setState({ tag })
+  }
+
+  onClearImg = () => {
+    this.setState({ images: [] })
   }
 
   render() {
@@ -87,7 +90,11 @@ export default class App extends React.Component {
               Загрузить
             </button>
 
-            <button type="button" className="btn btn-danger">
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={this.onClearImg}
+            >
               Очистить
             </button>
             <button type="button" className="btn btn-warning">
