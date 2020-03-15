@@ -2,6 +2,7 @@ import React from "react"
 import "./index.css"
 
 import tagService from "./services"
+import ImgItem from "./ImgItem"
 
 export default class App extends React.Component {
   state = {
@@ -33,6 +34,10 @@ export default class App extends React.Component {
   }
 
   onImgLoaded = url => {
+    if (!url) {
+      this.setState({ isNotFindTag: true })
+      return
+    }
     return this.setState(state => {
       return {
         images: [
@@ -55,7 +60,7 @@ export default class App extends React.Component {
 
   onChangeTag = e => {
     const tag = e.target.value
-    this.setState({ tag })
+    this.setState({ tag, isStartGetImg: false })
   }
 
   onImageClick = tag => {
@@ -71,13 +76,20 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { images, isLoading, isStartGetImg, isGrouped, err } = this.state
+    const {
+      images,
+      isLoading,
+      isStartGetImg,
+      isGrouped,
+      isNotFindTag,
+      err
+    } = this.state
 
     const notice = isStartGetImg ? <p>заполните поле 'тег'</p> : null
 
     const loading = isLoading ? <p>загрузка...</p> : null
 
-    const error = err ? <p>произошла ошибка</p> : null
+    const error = err && <p>произошла ошибка</p>
 
     const btnName = isGrouped ? "Разгруппировать" : "Группировать"
 
@@ -96,6 +108,18 @@ export default class App extends React.Component {
     }
 
     const tagGroups = groupByTag(images)
+
+    const connect = isNotFindTag ? (
+      <p>По тегу ничего не найдено</p>
+    ) : (
+      <ImgItem
+        images={images}
+        isGrouped={isGrouped}
+        tagGroups={tagGroups}
+        loading={loading}
+        onImageClick={this.onImageClick}
+      />
+    )
 
     return (
       <div className="app">
@@ -134,42 +158,7 @@ export default class App extends React.Component {
           <div className="notice">{notice}</div>
         </div>
 
-        {isGrouped ? (
-          <div className="item-tags-wrapper">
-            {Object.keys(tagGroups).map(tag => (
-              <div className="item-tags">
-                <h3 className="item-title">{tag}</h3>
-                <div className="item-row">
-                  {tagGroups[tag].map(imageUrl => (
-                    <div
-                      className="item"
-                      onClick={() => {
-                        this.onImageClick(tag)
-                      }}
-                    >
-                      <img src={imageUrl} alt="" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="images">
-            {this.state.images.map(img => (
-              <div
-                className="item"
-                key={img.id}
-                onClick={() => {
-                  this.onImageClick(img.tag)
-                }}
-              >
-                <img src={img.url} alt="" />
-              </div>
-            ))}
-            {loading}
-          </div>
-        )}
+        {connect}
         {error}
       </div>
     )
