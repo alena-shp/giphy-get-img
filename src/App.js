@@ -66,22 +66,45 @@ export default class App extends React.Component {
     this.setState({ images: [] })
   }
 
+  onGroupImg = () => {
+    this.setState(state => ({ isGrouped: !state.isGrouped }))
+  }
+
   render() {
-    const { isLoading, isStartGetImg } = this.state
+    const { images, isLoading, isStartGetImg, isGrouped } = this.state
+
+    const notice = isStartGetImg ? <p>заполните поле 'тег'</p> : null
 
     const loading = isLoading ? <p>загрузка...</p> : null
-    const notice = isStartGetImg ? <p>заполните поле 'тег'</p> : null
+
+    const btnName = isGrouped ? "Разгруппировать" : "Группировать"
+
+    const groupByTag = images => {
+      const result = {}
+
+      images.forEach(({ tag, url }) => {
+        if (result[tag]) {
+          result[tag] = [...result[tag], url]
+        } else {
+          result[tag] = [url]
+        }
+      })
+
+      return result
+    }
+
+    const tagGroups = groupByTag(images)
 
     return (
       <div className="app">
         <div className="form">
           <div className="action">
             <input
+              onChange={this.onChangeTag}
               value={this.state.tag}
               type="text"
               className="form-control"
               placeholder="введите тег"
-              onChange={this.onChangeTag}
             />
             <button
               type="button"
@@ -98,27 +121,53 @@ export default class App extends React.Component {
             >
               Очистить
             </button>
-            <button type="button" className="btn btn-warning">
-              Сгруппировать
+            <button
+              type="button"
+              className="btn btn-warning"
+              onClick={this.onGroupImg}
+            >
+              {btnName}
             </button>
           </div>
           <div className="notice">{notice}</div>
         </div>
 
-        <div className="images">
-          {this.state.images.map(img => (
-            <div
-              className="item"
-              key={img.id}
-              onClick={() => {
-                this.onImageClick(img.tag)
-              }}
-            >
-              <img src={img.url} alt="" />
-            </div>
-          ))}
-          {loading}
-        </div>
+        {isGrouped ? (
+          <div className="item-tags-wrapper">
+            {Object.keys(tagGroups).map(tag => (
+              <div className="item-tags">
+                <h3 className="item-title">{tag}</h3>
+                <div className="item-row">
+                  {tagGroups[tag].map(imageUrl => (
+                    <div
+                      className="item"
+                      onClick={() => {
+                        this.onImageClick(tag)
+                      }}
+                    >
+                      <img src={imageUrl} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="images">
+            {this.state.images.map(img => (
+              <div
+                className="item"
+                key={img.id}
+                onClick={() => {
+                  this.onImageClick(img.tag)
+                }}
+              >
+                <img src={img.url} alt="" />
+              </div>
+            ))}
+            {loading}
+          </div>
+        )}
       </div>
     )
   }
