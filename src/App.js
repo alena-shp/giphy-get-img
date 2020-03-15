@@ -71,11 +71,13 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { images, isLoading, isStartGetImg, isGrouped } = this.state
+    const { images, isLoading, isStartGetImg, isGrouped, err } = this.state
 
     const notice = isStartGetImg ? <p>заполните поле 'тег'</p> : null
 
     const loading = isLoading ? <p>загрузка...</p> : null
+
+    const error = err ? <p>произошла ошибка</p> : null
 
     const btnName = isGrouped ? "Разгруппировать" : "Группировать"
 
@@ -168,6 +170,7 @@ export default class App extends React.Component {
             {loading}
           </div>
         )}
+        {error}
       </div>
     )
   }
