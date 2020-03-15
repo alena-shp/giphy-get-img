@@ -16,11 +16,41 @@ export default class App extends React.Component {
 
   TagServices = new tagService()
 
+  onGetImg = () => {
+    if (!this.state.tag) {
+      this.setState({ isStartGetImg: true })
+      return
+    }
+    this.setState({ isLoading: true })
+    this.updataImg()
+  }
+
   updataImg = () => {
     const { tag } = this.state
     this.TagServices.getImg(tag)
       .then(this.onImgLoaded)
       .catch(this.onError)
+  }
+
+  onImgLoaded = url => {
+    return this.setState(state => {
+      return {
+        images: [
+          ...state.images,
+          {
+            tag: state.tag,
+            url: url,
+            id: url
+          }
+        ],
+        isLoading: false,
+        tag: ""
+      }
+    })
+  }
+
+  onError = err => {
+    this.setState({ err: true, isLoading: false })
   }
 
   onChangeTag = e => {
@@ -41,7 +71,11 @@ export default class App extends React.Component {
               placeholder="введите тег"
               onChange={this.onChangeTag}
             />
-            <button type="button" className="btn btn-primary">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.onGetImg}
+            >
               Загрузить
             </button>
 
@@ -52,6 +86,14 @@ export default class App extends React.Component {
               Сгруппировать
             </button>
           </div>
+        </div>
+
+        <div className="images">
+          {this.state.images.map(img => (
+            <div className="item" key={img.id}>
+              <img src={img.url} alt="" />
+            </div>
+          ))}
         </div>
       </div>
     )
