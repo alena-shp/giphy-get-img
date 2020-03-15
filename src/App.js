@@ -45,7 +45,7 @@ export default class App extends React.Component {
           {
             tag: state.tag,
             url: url,
-            id: url
+            id: Date.now().toString()
           }
         ],
         isLoading: false,
@@ -89,7 +89,7 @@ export default class App extends React.Component {
 
     const loading = isLoading ? <p>загрузка...</p> : null
 
-    const error = err && <p>произошла ошибка</p>
+    const error = err && <p className="text-err">произошла ошибка</p>
 
     const btnName = isGrouped ? "Разгруппировать" : "Группировать"
 

@@ -5,23 +5,27 @@ const ImgItem = ({ images, isGrouped, tagGroups, onImageClick, loading }) => {
     <>
       {isGrouped ? (
         <div className="item-tags-wrapper">
-          {Object.keys(tagGroups).map(tag => (
-            <div className="item-tags">
-              <h3 className="item-title">{tag}</h3>
-              <div className="item-row">
-                {tagGroups[tag].map(imageUrl => (
-                  <div
-                    className="item"
-                    onClick={() => {
-                      onImageClick(tag)
-                    }}
-                  >
-                    <img src={imageUrl} alt="" />
-                  </div>
-                ))}
+          {Object.keys(tagGroups).map((tag, id) => {
+            console.log(Object.keys(tagGroups))
+            return (
+              <div className="item-tags" key={id}>
+                <h3 className="item-title">{tag}</h3>
+                <div className="item-row">
+                  {tagGroups[tag].map(imageUrl => (
+                    <div
+                      key={imageUrl}
+                      className="item"
+                      onClick={() => {
+                        onImageClick(tag)
+                      }}
+                    >
+                      <img src={imageUrl} alt="" />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       ) : (
         <div className="images">
