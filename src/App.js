@@ -60,6 +60,10 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { isLoading } = this.state
+
+    const loading = isLoading ? <p>загрузка...</p> : null
+
     return (
       <div className="app">
         <div className="form">
@@ -94,6 +98,7 @@ export default class App extends React.Component {
               <img src={img.url} alt="" />
             </div>
           ))}
+          {loading}
         </div>
       </div>
     )
