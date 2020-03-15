@@ -67,9 +67,10 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { isLoading } = this.state
+    const { isLoading, isStartGetImg } = this.state
 
     const loading = isLoading ? <p>загрузка...</p> : null
+    const notice = isStartGetImg ? <p>заполните поле 'тег'</p> : null
 
     return (
       <div className="app">
@@ -101,6 +102,7 @@ export default class App extends React.Component {
               Сгруппировать
             </button>
           </div>
+          <div className="notice">{notice}</div>
         </div>
 
         <div className="images">
