@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 const ImgItem = ({ images, isGrouped, tagGroups, onImageClick, loading }) => {
   return (
@@ -6,7 +6,6 @@ const ImgItem = ({ images, isGrouped, tagGroups, onImageClick, loading }) => {
       {isGrouped ? (
         <div className="item-tags-wrapper">
           {Object.keys(tagGroups).map((tag, id) => {
-            console.log(Object.keys(tagGroups))
             return (
               <div className="item-tags" key={id}>
                 <h3 className="item-title">{tag}</h3>

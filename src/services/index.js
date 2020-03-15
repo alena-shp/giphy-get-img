@@ -1,5 +1,5 @@
 export default class tagService {
-  _nameUrl = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag"
+  _nameUrl = 'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag'
   getAnswer = async url => {
     const res = await fetch(`${this._nameUrl}${url}`)
     if (!res.ok) {

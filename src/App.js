@@ -1,12 +1,12 @@
-import React from "react"
-import "./index.css"
+import React from 'react'
+import './index.css'
 
-import tagService from "./services"
-import ImgItem from "./ImgItem"
+import tagService from './services'
+import ImgItem from './ImgItem'
 
 export default class App extends React.Component {
   state = {
-    tag: "",
+    tag: '',
     images: [],
     isStartGetImg: false,
     isLoading: false,
@@ -49,7 +49,7 @@ export default class App extends React.Component {
           }
         ],
         isLoading: false,
-        tag: ""
+        tag: ''
       }
     })
   }
@@ -91,7 +91,7 @@ export default class App extends React.Component {
 
     const error = err && <p className="text-err">произошла ошибка</p>
 
-    const btnName = isGrouped ? "Разгруппировать" : "Группировать"
+    const btnName = isGrouped ? 'Разгруппировать' : 'Группировать'
 
     const groupByTag = images => {
       const result = {}
