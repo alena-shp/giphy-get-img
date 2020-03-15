@@ -59,6 +59,10 @@ export default class App extends React.Component {
     console.log(tag)
   }
 
+  onImageClick = tag => {
+    this.setState({ tag })
+  }
+
   render() {
     const { isLoading } = this.state
 
@@ -94,7 +98,13 @@ export default class App extends React.Component {
 
         <div className="images">
           {this.state.images.map(img => (
-            <div className="item" key={img.id}>
+            <div
+              className="item"
+              key={img.id}
+              onClick={() => {
+                this.onImageClick(img.tag)
+              }}
+            >
               <img src={img.url} alt="" />
             </div>
           ))}
